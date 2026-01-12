@@ -12,6 +12,7 @@ export const router = createBrowserRouter([
         element: <HomePage />,
       },
       {
+        // TODO: Replace Id with id
         path: '/post/:Id',
         element: <PostPage />,
       },
