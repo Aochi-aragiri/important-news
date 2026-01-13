@@ -10,19 +10,25 @@ import {
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { Link } from 'react-router';
+import { getEditPostPath, getHomePath } from '@/constants/routes';
 
 export default function PostPage() {
   return (
     <div>
       {/* Navigation */}
       <div className="flex justify-between items-center">
-        <Button className="bg-stone-300 rounded-none text-black">
-          <ChevronLeft />
-          All news
+        <Button asChild className="bg-stone-300 rounded-none text-black flex">
+          <Link to={getHomePath()}>
+            <ChevronLeft />
+            Go home
+          </Link>
         </Button>
         <div className="flex gap-4">
-          <Button className="size-9 text-black">
-            <Edit />
+          <Button asChild className="size-9 text-black">
+            <Link to={getEditPostPath('post')}>
+              <Edit />
+            </Link>
           </Button>
           <Button className="size-9 text-black bg-[rgba(213,114,114,1)]">
             <Trash />

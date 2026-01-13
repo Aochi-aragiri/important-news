@@ -18,14 +18,23 @@ import {
   SelectValue,
   Select,
 } from '@/components/ui/select';
-import { Eye, MessageSquareMore, ThumbsDown, ThumbsUp } from 'lucide-react';
-
+import { getCreatePostPath, getPostPath } from '@/constants/routes';
+import {
+  ExternalLink,
+  Eye,
+  MessageSquareMore,
+  ThumbsDown,
+  ThumbsUp,
+} from 'lucide-react';
+import { Link } from 'react-router';
 export default function HomePage() {
   return (
     <div>
       <div className="flex gap-4 mb-10">
         <Input placeholder="#tag #lol" className="bg-amber-100"></Input>
-        <Button>Create Post</Button>
+        <Button asChild>
+          <Link to={getCreatePostPath()}>Create Post</Link>
+        </Button>
         <Select>
           <SelectTrigger className="w-45">
             <SelectValue placeholder="Sort" />
@@ -44,7 +53,12 @@ export default function HomePage() {
       <div className="pr-12 pl-12">
         <div className="flex justify-between bg-amber-100 gap-40 p-5 rounded-2xl mb-20">
           <div className="flex flex-col gap-5">
-            <p className="text-2xl">New Title</p>
+            <Link
+              to={getPostPath('post')}
+              className="text-2xl flex items-center gap-3.5"
+            >
+              New Title <ExternalLink />
+            </Link>
             <p className="text-sm">Description of lalaalaa...</p>
             <p className="text-xm">#fun #react</p>
             <div className="flex gap-4 ">

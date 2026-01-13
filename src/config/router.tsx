@@ -4,6 +4,8 @@ import RootLayout from '@/layout/root-layout';
 import EditPostPage from '@/pages/edit-post.page';
 import PostPage from '@/pages/post.page';
 import { RoutePaths } from '@/constants/routes';
+import NotFoundPage from '@/pages/not-found.page';
+import CreatePostPage from '@/pages/create-post.page';
 
 export const router = createBrowserRouter([
   {
@@ -21,6 +23,14 @@ export const router = createBrowserRouter([
         path: RoutePaths.POST,
         element: <PostPage />,
       },
+      {
+        path: RoutePaths.CREATE_POST,
+        element: <CreatePostPage />,
+      },
     ],
+  },
+  {
+    path: '*',
+    element: <NotFoundPage />,
   },
 ]);

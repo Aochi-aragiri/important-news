@@ -2,16 +2,23 @@ import { Button } from '@/components/ui/button';
 import { Field, FieldGroup, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { getPostPath } from '@/constants/routes';
 import { ChevronLeft } from 'lucide-react';
+import { Link } from 'react-router';
 
 export default function EditPostPage() {
   return (
     <div className="max-w-5xl mx-auto px-2 py-4">
       <div className="flex justify-between mb-2">
         <div className="w-full mr-4">
-          <Button variant={'outline'} className="mb-4 rounded-2 bg-[#D9D9D9]">
-            <ChevronLeft />
-            Back
+          <Button
+            asChild
+            variant={'outline'}
+            className="mb-4 rounded-2 bg-[#D9D9D9]"
+          >
+            <Link to={getPostPath('post')}>
+              <ChevronLeft /> Back
+            </Link>
           </Button>
           <FieldGroup className="gap-2">
             <Field className="gap-0">
