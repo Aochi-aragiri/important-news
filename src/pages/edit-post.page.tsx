@@ -15,19 +15,25 @@ export default function EditPostPage() {
           </Button>
           <FieldGroup className="gap-2">
             <Field className="gap-0">
-              <FieldLabel className="text-2xl font-bold ">
+              <FieldLabel className="text-2xl font-bold">
                 Edit Title:
               </FieldLabel>
-              <Input className="bg-[#D9D9D9] rounded-2" />
+              <Input
+                placeholder="Your Important New"
+                className="bg-[#D9D9D9] rounded-2"
+              />
             </Field>
             <Field className="gap-0">
               <FieldLabel className="text-2xl font-bold">Edit Text:</FieldLabel>
-              <Textarea className="h-100 bg-[#D9D9D9] rounded-2" />
+              <Textarea
+                placeholder="Description of your Important new"
+                className="h-100 bg-[#D9D9D9] rounded-2"
+              />
             </Field>
           </FieldGroup>
         </div>
         <div className="w-full">
-          <Button className="mb-2 w-full text-gl bg-[#AA9A4E] text-white text text-lg font-bold rounded-full">
+          <Button className="mb-2 py-6 px-10 w-full text-gl bg-[#AA9A4E] text-white text text-lg font-bold rounded-full">
             Change Image
           </Button>
           <img
@@ -38,7 +44,10 @@ export default function EditPostPage() {
           <FieldGroup>
             <Field className="gap-0">
               <FieldLabel className="text-2xl font-bold">Edit Tags:</FieldLabel>
-              <Input className="bg-[#D9D9D9] rounded-2" />
+              <Input
+                placeholder="Tags of your Important New"
+                className="bg-[#D9D9D9] rounded-2"
+              />
             </Field>
           </FieldGroup>
         </div>
