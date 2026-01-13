@@ -23,9 +23,6 @@ import { Eye, MessageSquareMore, ThumbsDown, ThumbsUp } from 'lucide-react';
 export default function HomePage() {
   return (
     <div>
-      <p className="flex justify-center mt-15 mb-10 text-4xl bg-primary rounded-2xl p-4">
-        Site Name
-      </p>
       <div className="flex gap-4 mb-10">
         <Input placeholder="#tag #lol" className="bg-amber-100"></Input>
         <Button>Create Post</Button>
