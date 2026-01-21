@@ -1,14 +1,33 @@
-import { Button } from '@/components/ui/button';
+import { useForm, FormProvider } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import PostForm from '@/components/post-form';
+import {
+  defaultValues,
+  validationSchema,
+  type PostFormData,
+} from '@/components/post-form.config';
 import { getHomePath } from '@/constants/routes';
-import { Link } from 'react-router';
 
 export default function CreatePostPage() {
+  const form = useForm<PostFormData>({
+    defaultValues,
+    resolver: zodResolver(validationSchema),
+  });
+
+  const handleSubmit = (data: PostFormData) => {
+    /* TODO:
+      1. Створити мутацію для обробки запиту на АПІ для створення поста (useMutation)
+      2. Викликати мутацію ось тут
+      3*. Обробити статус завантаження і помилки
+    */
+    console.log(data);
+  };
+
   return (
-    <div className="flex flex-col gap-3 items-baseline">
-      There`s empty here ^^
-      <Button asChild className="text-white">
-        <Link to={getHomePath()}>Go home</Link>
-      </Button>
-    </div>
+    <FormProvider {...form}>
+      <form onSubmit={form.handleSubmit(handleSubmit)}>
+        <PostForm backHref={getHomePath()} />
+      </form>
+    </FormProvider>
   );
 }
