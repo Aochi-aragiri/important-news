@@ -19,6 +19,8 @@ import {
   Select,
 } from '@/components/ui/select';
 import { getCreatePostPath, getPostPath } from '@/constants/routes';
+import { searchNewsService } from '@/services/search-news.service';
+import { useQuery } from '@tanstack/react-query';
 import {
   ExternalLink,
   Eye,
@@ -26,8 +28,18 @@ import {
   ThumbsDown,
   ThumbsUp,
 } from 'lucide-react';
+import { useState } from 'react';
 import { Link } from 'react-router';
+
+const PerPage = 5;
+
 export default function HomePage() {
+  const [page] = useState(1);
+
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ['news', page],
+    queryFn: () => searchNewsService(page, PerPage),
+  });
   return (
     <div>
       <div className="flex gap-4 mb-10">
@@ -36,7 +48,7 @@ export default function HomePage() {
           <Link to={getCreatePostPath()}>Create Post</Link>
         </Button>
         <Select>
-          <SelectTrigger className="w-45">
+          <SelectTrigger className="w-45 ">
             <SelectValue placeholder="Sort" />
           </SelectTrigger>
           <SelectContent>
@@ -51,40 +63,54 @@ export default function HomePage() {
         </Select>
       </div>
       <div className="pr-12 pl-12">
-        <div className="flex justify-between bg-amber-100 gap-40 p-5 rounded-2xl mb-20">
-          <div className="flex flex-col gap-5">
-            <Link
-              to={getPostPath('post')}
-              className="text-2xl flex items-center gap-3.5"
-            >
-              New Title <ExternalLink />
-            </Link>
-            <p className="text-sm">Description of lalaalaa...</p>
-            <p className="text-xm">#fun #react</p>
-            <div className="flex gap-4 ">
-              <p className="text-sm flex items-center justify-center gap-1">
-                10 <ThumbsUp />
+        {isLoading && (
+          <p className="flex justify-center text-2xl">Loading posts...</p>
+        )}
+        {isError && (
+          <p className="flex justify-center text-2xl">Failed to load posts.</p>
+        )}
+        {data?.data.map((post) => (
+          <div
+            key={post.id}
+            className="flex justify-between bg-amber-100 gap-40 p-5 rounded-2xl mb-20"
+          >
+            <div className="flex flex-col gap-6">
+              <Link
+                to={getPostPath(post.id)}
+                className="text-2xl flex items-center gap-3.5"
+              >
+                {post.title} <ExternalLink />
+              </Link>
+              <p className="text-sm">{post.body}</p>
+              <p className="text-xm">{post.tags}</p>
+              <div className="flex gap-4 ">
+                <p className="text-sm flex items-center justify-center gap-1">
+                  {post.likes} <ThumbsUp />
+                </p>
+                <p className="text-sm flex items-center justify-center gap-1">
+                  {post.dislikes} <ThumbsDown />
+                </p>
+                <p className="text-sm flex items-center justify-center gap-1">
+                  194 <Eye />
+                </p>
+                <p className="text-sm flex items-center justify-center gap-1">
+                  2 <MessageSquareMore />
+                </p>
+              </div>
+            </div>
+            <div className="flex justify-between">
+              <p className="text-sm">
+                {new Date(post.createdAt).toLocaleDateString()}
               </p>
-              <p className="text-sm flex items-center justify-center gap-1">
-                1 <ThumbsDown />
-              </p>
-              <p className="text-sm flex items-center justify-center gap-1">
-                194 <Eye />
-              </p>
-              <p className="text-sm flex items-center justify-center gap-1">
-                2 <MessageSquareMore />
-              </p>
+              <img
+                src={post.imageUrl}
+                alt="cat"
+                className="w-40 h-40 object-cover rounded-xl"
+              />
             </div>
           </div>
-          <div className="flex justify-between">
-            <Date></Date>
-            <img
-              src="https://ziggyfamily.com/cdn/shop/articles/chats-blancs-3_520x500_87ce6147-95bb-47ee-853b-ad0ec37f733a.jpg?v=1767715745"
-              alt="cat"
-              className="w-40 h-40 object-cover rounded-xl"
-            />
-          </div>
-        </div>
+        ))}
+
         <Pagination className="flex justify-end">
           <PaginationContent>
             <PaginationItem>
