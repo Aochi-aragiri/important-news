@@ -1,14 +1,41 @@
-import { Button } from '@/components/ui/button';
+import { useForm, FormProvider } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import PostForm from '@/components/post-form';
+import {
+  defaultValues,
+  validationSchema,
+  type PostFormData,
+} from '@/components/post-form.config';
 import { getHomePath } from '@/constants/routes';
-import { Link } from 'react-router';
+import { useMutation } from '@tanstack/react-query';
+import { createPostService } from '@/services/create-post.service';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 export default function CreatePostPage() {
+  const form = useForm<PostFormData>({
+    defaultValues,
+    resolver: zodResolver(validationSchema),
+  });
+
+  const { mutate, isPending, error, isError } = useMutation({
+    mutationFn: createPostService,
+  });
+
+  const handleSubmit = (data: PostFormData) => {
+    mutate(data);
+  };
+
   return (
-    <div className="flex flex-col gap-3 items-baseline">
-      There`s empty here ^^
-      <Button asChild className="text-white">
-        <Link to={getHomePath()}>Go home</Link>
-      </Button>
-    </div>
+    <FormProvider {...form}>
+      <form onSubmit={form.handleSubmit(handleSubmit)}>
+        {isError && (
+          <Alert>
+            <AlertDescription>{error.message}</AlertDescription>
+          </Alert>
+        )}
+
+        <PostForm backHref={getHomePath()} pending={isPending} />
+      </form>
+    </FormProvider>
   );
 }

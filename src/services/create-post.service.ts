@@ -5,6 +5,7 @@ interface CreatePostDto {
   title: string;
   body: string;
   imageUrl: string;
+  tags: string;
 }
 
 export async function createPostService(data: CreatePostDto) {

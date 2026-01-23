@@ -10,10 +10,12 @@ import {
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Link } from 'react-router';
+import { Link, useParams } from 'react-router';
 import { getEditPostPath, getHomePath } from '@/constants/routes';
 
 export default function PostPage() {
+  const { postId } = useParams() as { postId: string };
+
   return (
     <div>
       {/* Navigation */}
@@ -26,7 +28,7 @@ export default function PostPage() {
         </Button>
         <div className="flex gap-4">
           <Button asChild className="size-9 text-black">
-            <Link to={getEditPostPath('post')}>
+            <Link to={getEditPostPath(postId)}>
               <Edit />
             </Link>
           </Button>
