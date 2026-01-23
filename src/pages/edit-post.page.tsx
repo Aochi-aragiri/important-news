@@ -44,13 +44,7 @@ export default function EditPostPage() {
   });
 
   const handleSubmit = (data: PostFormData) => {
-    /* TODO:
-        1. Створити мутацію для обробки запиту на АПІ для оновлення поста (useMutation)
-        2. Викликати мутацію ось тут
-        3*. Обробити статус завантаження і помилки
-      */
     mutate(data);
-    console.log(data);
   };
 
   return (
