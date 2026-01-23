@@ -12,66 +12,22 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Link, useParams } from 'react-router-dom';
 import { getEditPostPath, getHomePath } from '@/constants/routes';
-import { useEffect, useState } from 'react';
 import { getPostService } from '@/services/get-post.service';
-import { apiClient } from '@/lib/api-client';
-import type { Post } from '@/types/post';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useQuery } from '@tanstack/react-query';
+import { format } from 'date-fns';
 
 export default function PostPage() {
-  const { postId } = useParams<{ postId: string }>();
-  const [post, setPost] = useState<Post | null>(null);
-  const [isLoading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [isPending, setIsPending] = useState(false);
+  const { postId } = useParams() as { postId: string };
 
-  useEffect(() => {
-    if (!postId) return;
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['news', postId],
+    queryFn: () => getPostService(postId),
+  });
 
-    const fetchPost = async () => {
-      try {
-        setLoading(true);
-        const data = await getPostService(postId);
-        const postData = Array.isArray(data) ? data[0] : data;
-        if (!postData) throw new Error();
-        setPost(postData);
-      } catch {
-        setError('Failed to fetch post data :(');
-      } finally {
-        setLoading(false);
-      }
-    };
+  const handleLike = async () => {};
 
-    fetchPost();
-  }, [postId]);
-
-  const handleLike = async () => {
-    if (!postId || isPending) return;
-    try {
-      setIsPending(true);
-      await apiClient.post(`/news/${postId}/like`);
-      const data = await getPostService(postId);
-      const postData = Array.isArray(data) ? data[0] : data;
-      if (!postData) return;
-      setPost(postData);
-    } finally {
-      setIsPending(false);
-    }
-  };
-
-  const handleDislike = async () => {
-    if (!postId || isPending) return;
-    try {
-      setIsPending(true);
-      await apiClient.post(`/news/${postId}/dislike`);
-      const data = await getPostService(postId);
-      const postData = Array.isArray(data) ? data[0] : data;
-      if (!postData) return;
-      setPost(postData);
-    } finally {
-      setIsPending(false);
-    }
-  };
+  const handleDislike = async () => {};
 
   if (isLoading) {
     return (
@@ -82,8 +38,15 @@ export default function PostPage() {
     );
   }
 
-  if (error || !post) {
-    return <div>{error || 'Post not found :('}</div>;
+  // TODO replace with Alert
+  // TODO move to separate component
+
+  if (error) {
+    return <div>{error.message || 'Post not found :('}</div>;
+  }
+
+  if (!data) {
+    return null;
   }
 
   return (
@@ -107,21 +70,21 @@ export default function PostPage() {
         </div>
       </div>
 
-      <div className="flex gap-8 p-9">
-        <div>
+      <div className="flex gap-8 p-9 justify-between min-h-50">
+        <div className="flex-1">
           <div className="flex justify-between items-center mb-5 border-b pb-2 border-black">
-            <h2 className="font-bold text-2xl">{post.title}</h2>
-            <time className="text-stone-600" dateTime={post.createdAt}>
-              {new Date(post.createdAt).toLocaleDateString()}
+            <h2 className="font-bold text-2xl">{data.title}</h2>
+            <time className="text-stone-600" dateTime={data.createdAt}>
+              {format(data.createdAt, 'MMM d, yyyy')}
             </time>
           </div>
-          <p>{post.body}</p>
+          <p>{data.body}</p>
         </div>
         <div className="flex flex-col gap-3">
-          <div className="w-80 h-92 flex justify-center bg-stone-300 items-center">
-            <img src={post.imageUrl} alt={post.title} />
+          <div className="max-w-80 max-h-92 flex justify-center bg-stone-300 items-center">
+            <img src={data.imageUrl} alt={data.title} />
           </div>
-          <p className="text-black font-medium">{post.tags}</p>
+          <p className="text-black font-medium">{data.tags}</p>
         </div>
       </div>
 
@@ -129,30 +92,30 @@ export default function PostPage() {
         <div className="flex items-center gap-6 ml-9">
           <Button
             onClick={handleLike}
-            disabled={isPending}
+            disabled={isLoading}
             className="flex items-center gap-1 text-[rgba(170,154,78,1)] bg-transparent hover:bg-stone-200"
           >
-            {post.likes}
+            {data.likes}
             <ThumbsUp />
           </Button>
           <Button
             onClick={handleDislike}
-            disabled={isPending}
+            disabled={isLoading}
             className="flex items-center gap-1 text-[rgba(170,154,78,1)] bg-transparent hover:bg-stone-200"
           >
-            {post.dislikes}
+            {data.dislikes}
             <ThumbsDown />
           </Button>
         </div>
 
         <div className="flex items-center gap-6 ml-9">
-          <div className="flex items-center gap-1">
-            194
-            <Eye />
+          <div className="flex items-center gap-1 text-sm font-medium">
+            {data.views}
+            <Eye size={16} />
           </div>
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1 text-sm font-medium">
             2
-            <MessageSquareMore />
+            <MessageSquareMore size={16} />
           </div>
         </div>
       </div>

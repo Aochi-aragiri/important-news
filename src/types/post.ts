@@ -8,4 +8,5 @@ export interface Post {
   likes: number;
   dislikes: number;
   tags: string;
+  views: number;
 }
