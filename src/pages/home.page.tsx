@@ -40,6 +40,7 @@ export default function HomePage() {
     queryKey: ['news', page],
     queryFn: () => searchNewsService(page, PerPage),
   });
+
   return (
     <div>
       <div className="flex gap-4 mb-10">
@@ -62,14 +63,20 @@ export default function HomePage() {
           </SelectContent>
         </Select>
       </div>
+
       <div className="pr-12 pl-12">
         {isLoading && (
+          // TODO: replace with spinner
           <p className="flex justify-center text-2xl">Loading posts...</p>
         )}
         {isError && (
+          // TODO: replace with Alert
+          // TODO: move to separate component
           <p className="flex justify-center text-2xl">Failed to load posts.</p>
         )}
+        {/* TODO: move to PostsList component */}
         {data?.data.map((post) => (
+          // TODO: move to PostCard component
           <div
             key={post.id}
             className="flex justify-between bg-amber-100 gap-40 p-5 rounded-2xl mb-20"
@@ -91,17 +98,19 @@ export default function HomePage() {
                   {post.dislikes} <ThumbsDown />
                 </p>
                 <p className="text-sm flex items-center justify-center gap-1">
-                  194 <Eye />
+                  {post.views} <Eye />
                 </p>
                 <p className="text-sm flex items-center justify-center gap-1">
-                  2 <MessageSquareMore />
+                  {post.comments.length} <MessageSquareMore />
                 </p>
               </div>
             </div>
             <div className="flex justify-between">
               <p className="text-sm">
+                {/* TODO: format with date-fns */}
                 {new Date(post.createdAt).toLocaleDateString()}
               </p>
+              {/* TODO: fix image */}
               <img
                 src={post.imageUrl}
                 alt="cat"
