@@ -10,7 +10,7 @@ import {
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router';
 import { getEditPostPath, getHomePath } from '@/constants/routes';
 import { getPostService } from '@/services/get-post.service';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -60,7 +60,7 @@ export default function PostPage() {
         </Button>
         <div className="flex gap-4">
           <Button asChild className="size-9 text-black">
-            <Link to={getEditPostPath(postId!)}>
+            <Link to={getEditPostPath(postId)}>
               <Edit />
             </Link>
           </Button>
