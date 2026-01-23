@@ -18,18 +18,14 @@ import {
   SelectValue,
   Select,
 } from '@/components/ui/select';
-import { getCreatePostPath, getPostPath } from '@/constants/routes';
+import { Spinner } from '@/components/ui/spinner';
+import { getCreatePostPath } from '@/constants/routes';
 import { searchNewsService } from '@/services/search-news.service';
 import { useQuery } from '@tanstack/react-query';
-import {
-  ExternalLink,
-  Eye,
-  MessageSquareMore,
-  ThumbsDown,
-  ThumbsUp,
-} from 'lucide-react';
 import { useState } from 'react';
 import { Link } from 'react-router';
+import { ErrorAlert } from '@/components/HomeAlert';
+import { PostsList } from '@/components/PostList';
 
 const PerPage = 5;
 
@@ -65,60 +61,9 @@ export default function HomePage() {
       </div>
 
       <div className="pr-12 pl-12">
-        {isLoading && (
-          // TODO: replace with spinner
-          <p className="flex justify-center text-2xl">Loading posts...</p>
-        )}
-        {isError && (
-          // TODO: replace with Alert
-          // TODO: move to separate component
-          <p className="flex justify-center text-2xl">Failed to load posts.</p>
-        )}
-        {/* TODO: move to PostsList component */}
-        {data?.data.map((post) => (
-          // TODO: move to PostCard component
-          <div
-            key={post.id}
-            className="flex justify-between bg-amber-100 gap-40 p-5 rounded-2xl mb-20"
-          >
-            <div className="flex flex-col gap-6">
-              <Link
-                to={getPostPath(post.id)}
-                className="text-2xl flex items-center gap-3.5"
-              >
-                {post.title} <ExternalLink />
-              </Link>
-              <p className="text-sm">{post.body}</p>
-              <p className="text-xm">{post.tags}</p>
-              <div className="flex gap-4 ">
-                <p className="text-sm flex items-center justify-center gap-1">
-                  {post.likes} <ThumbsUp />
-                </p>
-                <p className="text-sm flex items-center justify-center gap-1">
-                  {post.dislikes} <ThumbsDown />
-                </p>
-                <p className="text-sm flex items-center justify-center gap-1">
-                  {post.views} <Eye />
-                </p>
-                <p className="text-sm flex items-center justify-center gap-1">
-                  {post.comments.length} <MessageSquareMore />
-                </p>
-              </div>
-            </div>
-            <div className="flex justify-between">
-              <p className="text-sm">
-                {/* TODO: format with date-fns */}
-                {new Date(post.createdAt).toLocaleDateString()}
-              </p>
-              {/* TODO: fix image */}
-              <img
-                src={post.imageUrl}
-                alt="cat"
-                className="w-40 h-40 object-cover rounded-xl"
-              />
-            </div>
-          </div>
-        ))}
+        {isLoading && <Spinner className="fixed top-4 right-4" />}
+        {isError && <ErrorAlert />}
+        {data?.data && <PostsList posts={data.data} />}
 
         <Pagination className="flex justify-end">
           <PaginationContent>
