@@ -7,11 +7,18 @@ import {
   type PostFormData,
 } from '@/components/post-form.config';
 import { getHomePath } from '@/constants/routes';
+import { useMutation } from '@tanstack/react-query';
+import { createPostService } from '@/services/create-post.service';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 export default function CreatePostPage() {
   const form = useForm<PostFormData>({
     defaultValues,
     resolver: zodResolver(validationSchema),
+  });
+
+  const { mutate, isPending, error, isError } = useMutation({
+    mutationFn: createPostService,
   });
 
   const handleSubmit = (data: PostFormData) => {
@@ -20,13 +27,20 @@ export default function CreatePostPage() {
       2. Викликати мутацію ось тут
       3*. Обробити статус завантаження і помилки
     */
+    mutate(data);
     console.log(data);
   };
 
   return (
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(handleSubmit)}>
-        <PostForm backHref={getHomePath()} />
+        {isError && (
+          <Alert>
+            <AlertDescription>{error.message}</AlertDescription>
+          </Alert>
+        )}
+
+        <PostForm backHref={getHomePath()} pending={isPending} />
       </form>
     </FormProvider>
   );

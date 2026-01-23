@@ -9,9 +9,10 @@ import type { PostFormData } from './post-form.config';
 
 interface PostFormProps {
   backHref: string;
+  pending: boolean;
 }
 
-export default function PostForm({ backHref }: PostFormProps) {
+export default function PostForm({ backHref, pending }: PostFormProps) {
   const form = useFormContext<PostFormData>();
 
   const imageUrl = form.watch('imageUrl');
@@ -35,6 +36,7 @@ export default function PostForm({ backHref }: PostFormProps) {
                 Edit Title:
               </FieldLabel>
               <Input
+                disabled={pending}
                 placeholder="Your Important New"
                 className="bg-[#D9D9D9] rounded-2"
                 {...form.register('title')}
@@ -43,6 +45,7 @@ export default function PostForm({ backHref }: PostFormProps) {
             <Field className="gap-0">
               <FieldLabel className="text-2xl font-bold">Edit Text:</FieldLabel>
               <Textarea
+                disabled={pending}
                 placeholder="Description of your Important new"
                 className="h-100 bg-[#D9D9D9] rounded-2"
                 {...form.register('body')}
@@ -53,6 +56,7 @@ export default function PostForm({ backHref }: PostFormProps) {
         <Field className="w-full">
           <FieldLabel>Image</FieldLabel>
           <Input
+            disabled={pending}
             type="url"
             placeholder="https://images.com/image.jpg"
             {...form.register('imageUrl')}
@@ -70,6 +74,7 @@ export default function PostForm({ backHref }: PostFormProps) {
             <Field className="gap-0">
               <FieldLabel className="text-2xl font-bold">Edit Tags:</FieldLabel>
               <Input
+                disabled={pending}
                 placeholder="Tags of your Important New"
                 className="bg-[#D9D9D9] rounded-2"
                 {...form.register('tags')}

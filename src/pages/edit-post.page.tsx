@@ -4,10 +4,12 @@ import {
   validationSchema,
   type PostFormData,
 } from '@/components/post-form.config';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { getPostPath } from '@/constants/routes';
+import { editPostService } from '@/services/edit-post.service';
 import { getPostService } from '@/services/get-post.service';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useParams } from 'react-router';
@@ -37,19 +39,30 @@ export default function EditPostPage() {
     }
   }, [data]);
 
+  const { mutate, isPending, error, isError } = useMutation({
+    mutationFn: editPostService,
+  });
+
   const handleSubmit = (data: PostFormData) => {
     /* TODO:
         1. Створити мутацію для обробки запиту на АПІ для оновлення поста (useMutation)
         2. Викликати мутацію ось тут
         3*. Обробити статус завантаження і помилки
       */
+    mutate(data);
     console.log(data);
   };
 
   return (
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(handleSubmit)}>
-        <PostForm backHref={getPostPath('post')} />
+        {isError && (
+          <Alert>
+            <AlertDescription>{error?.message}</AlertDescription>
+          </Alert>
+        )}
+
+        <PostForm backHref={getPostPath(postId)} pending={isPending} />
       </form>
     </FormProvider>
   );
