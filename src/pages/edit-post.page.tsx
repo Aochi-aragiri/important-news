@@ -13,9 +13,12 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useParams } from 'react-router';
+import { useNavigate } from 'react-router';
 
 export default function EditPostPage() {
   const { postId } = useParams() as { postId: string };
+
+  const navigate = useNavigate();
 
   const form = useForm<PostFormData>({
     defaultValues,
@@ -41,10 +44,13 @@ export default function EditPostPage() {
 
   const { mutate, isPending, error, isError } = useMutation({
     mutationFn: editPostService,
+    onSuccess: () => {
+      navigate(getPostPath(postId));
+    },
   });
 
   const handleSubmit = (data: PostFormData) => {
-    mutate(data);
+    mutate({ id: postId, data });
   };
 
   return (
