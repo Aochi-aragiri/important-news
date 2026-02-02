@@ -6,7 +6,6 @@ import {
   MessageSquareMore,
   ThumbsDown,
   ThumbsUp,
-  Trash,
 } from 'lucide-react';
 import { Link, useParams } from 'react-router';
 import { getEditPostPath, getHomePath } from '@/constants/routes';
@@ -78,16 +77,11 @@ export default function PostPage() {
             Go home
           </Link>
         </Button>
-        <div className="flex gap-4">
-          <Button asChild className="size-9 text-black">
-            <Link to={getEditPostPath(postId)}>
-              <Edit />
-            </Link>
-          </Button>
-          <Button className="size-9 text-black bg-[rgba(213,114,114,1)]">
-            <Trash />
-          </Button>
-        </div>
+        <Button asChild className="size-9 text-black">
+          <Link to={getEditPostPath(postId)}>
+            <Edit />
+          </Link>
+        </Button>
       </div>
 
       <div className="flex gap-8 p-9 justify-between min-h-50">
