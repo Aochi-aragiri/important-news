@@ -55,7 +55,10 @@ export default function CommentForm({ newsId }: CommentFormProps) {
             {...form.register('text')}
           />
           <div className="flex flex-row-reverse border-b border-stone-400 pb-8">
-            <Button type="submit" className="text-white rounded-2xl">
+            <Button
+              type="submit"
+              className="text-white rounded-2xl cursor-pointer"
+            >
               Create comment
             </Button>
           </div>

@@ -58,8 +58,6 @@ export default function PostPage() {
     );
   }
 
-  // TODO move to separate component
-
   if (error) {
     return <ErrorAlert />;
   }
@@ -102,7 +100,7 @@ export default function PostPage() {
           <Button
             onClick={handleLike}
             disabled={isLoading}
-            className="flex items-center gap-1 text-[rgba(170,154,78,1)] bg-transparent hover:bg-stone-200"
+            className="flex items-center gap-1 cursor-pointer text-[rgba(170,154,78,1)] bg-transparent hover:bg-stone-200"
           >
             {data.likes}
             <ThumbsUp />
@@ -110,7 +108,7 @@ export default function PostPage() {
           <Button
             onClick={handleDislike}
             disabled={isLoading}
-            className="flex items-center gap-1 text-[rgba(170,154,78,1)] bg-transparent hover:bg-stone-200"
+            className="flex items-center gap-1 cursor-pointer text-[rgba(170,154,78,1)] bg-transparent hover:bg-stone-200"
           >
             {data.dislikes}
             <ThumbsDown />
