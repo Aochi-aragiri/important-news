@@ -12,12 +12,11 @@ import { getEditPostPath, getHomePath } from '@/constants/routes';
 import { getPostService } from '@/services/get-post.service';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { format } from 'date-fns';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { likePostService } from '@/services/like-post.service';
 import { dislikePostService } from '@/services/dislike-post.service';
-import Markdown from 'react-markdown';
 import CommentForm from '@/components/comment-form';
+import PostData from '@/components/post-data';
 
 export default function PostPage() {
   const { postId } = useParams() as { postId: string };
@@ -58,8 +57,6 @@ export default function PostPage() {
     );
   }
 
-  // TODO move to separate component
-
   if (error) {
     return <ErrorAlert />;
   }
@@ -84,32 +81,20 @@ export default function PostPage() {
         </Button>
       </div>
 
-      <div className="flex gap-8 p-9 justify-between min-h-50">
-        <div className="flex-1">
-          <div className="flex justify-between items-center mb-5 border-b pb-2 border-black">
-            <h2 className="font-bold text-2xl">{data.title}</h2>
-            <time className="text-stone-600" dateTime={data.createdAt}>
-              {format(data.createdAt, 'MMM d, yyyy')}
-            </time>
-          </div>
-          <article className="prose">
-            <Markdown>{data.body}</Markdown>
-          </article>
-        </div>
-        <div className="flex flex-col gap-3">
-          <div className="max-w-80 max-h-92 flex justify-center bg-stone-300 items-center">
-            <img src={data.imageUrl} alt={data.title} />
-          </div>
-          <p className="text-black font-medium">{data.tags}</p>
-        </div>
-      </div>
+      <PostData
+        title={data.title}
+        createdAt={data.createdAt}
+        body={data.body}
+        imageUrl={data.imageUrl}
+        tags={data.tags}
+      />
 
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-6 ml-9">
           <Button
             onClick={handleLike}
             disabled={isLoading}
-            className="flex items-center gap-1 text-[rgba(170,154,78,1)] bg-transparent hover:bg-stone-200"
+            className="flex items-center gap-1 cursor-pointer text-[rgba(170,154,78,1)] bg-transparent hover:bg-stone-200"
           >
             {data.likes}
             <ThumbsUp />
@@ -117,7 +102,7 @@ export default function PostPage() {
           <Button
             onClick={handleDislike}
             disabled={isLoading}
-            className="flex items-center gap-1 text-[rgba(170,154,78,1)] bg-transparent hover:bg-stone-200"
+            className="flex items-center gap-1 cursor-pointer text-[rgba(170,154,78,1)] bg-transparent hover:bg-stone-200"
           >
             {data.dislikes}
             <ThumbsDown />
