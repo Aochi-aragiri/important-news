@@ -5,7 +5,11 @@ export interface PostWithComments extends Post {
   comments: object[];
 }
 
-export async function searchNewsService(page: number, perPage: number) {
+export async function searchNewsService(
+  page: number,
+  perPage: number,
+  query: string,
+) {
   const res = await apiClient.get<{
     page: number;
     perPage: number;
@@ -13,7 +17,7 @@ export async function searchNewsService(page: number, perPage: number) {
     totalCount: number;
     data: PostWithComments[];
   }>('/news', {
-    params: { page, perPage },
+    params: { page, perPage, q: query },
   });
   return res.data;
 }
