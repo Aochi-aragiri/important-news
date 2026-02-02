@@ -24,7 +24,7 @@ import { searchNewsService } from '@/services/search-news.service';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { Link } from 'react-router';
-import { ErrorAlert } from '@/components/HomeAlert';
+import { ErrorAlert } from '@/components/ErrorAlert';
 import { PostsList } from '@/components/PostList';
 
 const PerPage = 5;

@@ -17,6 +17,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import CommentsSection from '@/components/CommentsSection';
+import { ErrorAlert } from '@/components/ErrorAlert';
 
 export default function PostPage() {
   const { postId } = useParams() as { postId: string };
@@ -39,11 +40,10 @@ export default function PostPage() {
     );
   }
 
-  // TODO replace with Alert
   // TODO move to separate component
 
   if (error) {
-    return <div>{error.message || 'Post not found :('}</div>;
+    return <ErrorAlert />;
   }
 
   if (!data) {
