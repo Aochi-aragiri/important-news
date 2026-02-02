@@ -1,13 +1,16 @@
 import { apiClient } from '@/lib/api-client';
 
 interface EditPostDto {
-  title: string;
-  body: string;
-  imageUrl: string;
-  tags: string;
+  id: string;
+  data: {
+    title: string;
+    body: string;
+    imageUrl: string;
+    tags: string;
+  };
 }
 
-export async function editPostService(data: EditPostDto) {
-  const res = await apiClient.patch('/news', data);
+export async function editPostService({ id, data }: EditPostDto) {
+  const res = await apiClient.patch(`/news/${id}`, data);
   return res.data;
 }

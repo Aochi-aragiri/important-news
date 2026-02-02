@@ -16,6 +16,7 @@ import { getPostService } from '@/services/get-post.service';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';
+import CommentsSection from '@/components/CommentsSection';
 
 export default function PostPage() {
   const { postId } = useParams() as { postId: string };
@@ -136,6 +137,7 @@ export default function PostPage() {
           <div className="flex flex-row-reverse border-b border-stone-400 pb-8">
             <Button className="text-white rounded-2xl">Create comment</Button>
           </div>
+          <CommentsSection />
         </div>
       </div>
     </div>
