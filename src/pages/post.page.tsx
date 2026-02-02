@@ -8,16 +8,14 @@ import {
   ThumbsUp,
   Trash,
 } from 'lucide-react';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import { Link, useParams } from 'react-router';
 import { getEditPostPath, getHomePath } from '@/constants/routes';
 import { getPostService } from '@/services/get-post.service';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';
-import CommentsSection from '@/components/CommentsSection';
 import { ErrorAlert } from '@/components/ErrorAlert';
+import CommentForm from '@/components/comment-form';
 
 export default function PostPage() {
   const { postId } = useParams() as { postId: string };
@@ -121,25 +119,7 @@ export default function PostPage() {
         </div>
       </div>
 
-      <div className="bg-[rgba(68,68,68,1)]">
-        <div className="container mx-auto p-8 max-w-200 mt-5 flex flex-col gap-8">
-          <h1 className="font-bold text-2xl text-[rgba(170,154,78,1)] ml-9 pb-1">
-            Comments
-          </h1>
-          <Input
-            className="bg-stone-300 rounded-none placeholder:text-stone-800"
-            placeholder="Enter your nickname..."
-          />
-          <Textarea
-            className="bg-stone-300 rounded-none placeholder:text-stone-800"
-            placeholder="Enter your comment here..."
-          />
-          <div className="flex flex-row-reverse border-b border-stone-400 pb-8">
-            <Button className="text-white rounded-2xl">Create comment</Button>
-          </div>
-          <CommentsSection />
-        </div>
-      </div>
+      <CommentForm newsId={postId} />
     </div>
   );
 }

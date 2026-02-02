@@ -39,6 +39,7 @@ export default function PostForm({ backHref, pending }: PostFormProps) {
                 disabled={pending}
                 placeholder="Your Important New"
                 className="bg-[#D9D9D9] rounded-2"
+                aria-invalid={!!form.formState.errors.title}
                 {...form.register('title')}
               />
             </Field>
@@ -48,6 +49,7 @@ export default function PostForm({ backHref, pending }: PostFormProps) {
                 disabled={pending}
                 placeholder="Description of your Important new"
                 className="h-100 bg-[#D9D9D9] rounded-2"
+                aria-invalid={!!form.formState.errors.body}
                 {...form.register('body')}
               />
             </Field>
@@ -59,6 +61,7 @@ export default function PostForm({ backHref, pending }: PostFormProps) {
             disabled={pending}
             type="url"
             placeholder="https://images.com/image.jpg"
+            aria-invalid={!!form.formState.errors.imageUrl}
             {...form.register('imageUrl')}
           />
           {imageUrl ? (
@@ -77,6 +80,7 @@ export default function PostForm({ backHref, pending }: PostFormProps) {
                 disabled={pending}
                 placeholder="Tags of your Important New"
                 className="bg-[#D9D9D9] rounded-2"
+                aria-invalid={!!form.formState.errors.tags}
                 {...form.register('tags')}
               />
             </Field>
