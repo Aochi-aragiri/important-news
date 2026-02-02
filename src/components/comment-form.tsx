@@ -24,7 +24,7 @@ export default function CommentForm({ newsId }: CommentFormProps) {
 
   const queryClient = useQueryClient();
 
-  const { mutate, isPending, error } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: CreateCommentService,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['news', newsId, 'comments'] });
