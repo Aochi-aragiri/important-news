@@ -12,22 +12,42 @@ import { Link, useParams } from 'react-router';
 import { getEditPostPath, getHomePath } from '@/constants/routes';
 import { getPostService } from '@/services/get-post.service';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ErrorAlert } from '@/components/ErrorAlert';
+import { likePostService } from '@/services/like-post.service';
+import { dislikePostService } from '@/services/dislike-post.service';
 import CommentForm from '@/components/comment-form';
 import PostData from '@/components/post-data';
 
 export default function PostPage() {
   const { postId } = useParams() as { postId: string };
-
+  const queryClient = useQueryClient();
   const { data, isLoading, error } = useQuery({
     queryKey: ['news', postId],
     queryFn: () => getPostService(postId),
   });
 
-  const handleLike = async () => {};
+  const likeMutation = useMutation({
+    mutationFn: () => likePostService(postId),
+    onSuccess: (updatedPost) => {
+      queryClient.setQueryData(['news', postId], updatedPost);
+    },
+  });
 
-  const handleDislike = async () => {};
+  const dislikeMutation = useMutation({
+    mutationFn: () => dislikePostService(postId),
+    onSuccess: (updatedPost) => {
+      queryClient.setQueryData(['news', postId], updatedPost);
+    },
+  });
+
+  const handleLike = async () => {
+    likeMutation.mutate();
+  };
+
+  const handleDislike = async () => {
+    dislikeMutation.mutate();
+  };
 
   if (isLoading) {
     return (
