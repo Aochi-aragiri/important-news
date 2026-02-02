@@ -1,4 +1,5 @@
 import { format } from 'date-fns';
+import Markdown from 'react-markdown';
 
 interface PostDataProps {
   title: string;
@@ -24,7 +25,9 @@ export default function PostData({
             {format(createdAt, 'MMM d, yyyy')}
           </time>
         </div>
-        <p>{body}</p>
+        <p className="prose">
+          <Markdown>{body}</Markdown>
+        </p>
       </div>
       <div className="flex flex-col gap-3">
         <div className="max-w-80 max-h-92 flex justify-center bg-stone-300 items-center">
