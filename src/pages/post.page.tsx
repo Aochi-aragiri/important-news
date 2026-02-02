@@ -18,6 +18,7 @@ import { useQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import CommentsSection from '@/components/CommentsSection';
 import { ErrorAlert } from '@/components/ErrorAlert';
+import Markdown from 'react-markdown';
 
 export default function PostPage() {
   const { postId } = useParams() as { postId: string };
@@ -79,7 +80,9 @@ export default function PostPage() {
               {format(data.createdAt, 'MMM d, yyyy')}
             </time>
           </div>
-          <p>{data.body}</p>
+          <article className="prose">
+            <Markdown>{data.body}</Markdown>
+          </article>
         </div>
         <div className="flex flex-col gap-3">
           <div className="max-w-80 max-h-92 flex justify-center bg-stone-300 items-center">
