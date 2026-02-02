@@ -9,6 +9,7 @@ import {
   ThumbsUp,
 } from 'lucide-react';
 import { Link } from 'react-router';
+import Markdown from 'react-markdown';
 
 type PostCardProps = {
   post: PostWithComments;
@@ -27,7 +28,9 @@ export function PostCard({ post }: PostCardProps) {
         >
           {post.title} <ExternalLink />
         </Link>
-        <p className="text-sm max-w-120">{post.body}</p>
+        <article className="prose prose-sm max-w-120">
+          <Markdown>{post.body}</Markdown>
+        </article>
         <p className="text-xm">{post.tags}</p>
         <div className="flex gap-4 ">
           <p className="text-sm flex items-center justify-center gap-1">
